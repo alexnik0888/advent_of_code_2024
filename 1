@@ -1,0 +1,40 @@
+fun sort1(inputStr: String): Int {
+        val inputArray = inputStr.split("\n")
+        val first = arrayListOf<Int>()
+        val second = arrayListOf<Int>()
+        inputArray.forEach {
+            val listRow = it.split("   ").map { it.toInt() }
+            first.add(listRow[0])
+            second.add(listRow[1])
+        }
+        first.sort()
+        second.sort()
+
+        var result = 0
+        first.forEachIndexed { index, i ->
+            result += Math.abs(i - second[index])
+        }
+        return result
+    }
+
+fun sort2(inputStr: String) {
+        val inputArray = inputStr.split("\n")
+        val first = arrayListOf<Int>()
+        val second = arrayListOf<Int>()
+        inputArray.forEach {
+            val listRow = it.split("   ").map { it.toInt() }
+            first.add(listRow[0])
+            second.add(listRow[1])
+        }
+
+        var result = 0
+        first.forEach { firstChar ->
+            var count = 0
+            second.forEach {
+                if (firstChar == it)
+                    count += 1
+            }
+            result += (count * firstChar)
+        }
+        return result
+    }
