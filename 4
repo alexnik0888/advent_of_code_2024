@@ -1,0 +1,75 @@
+ val directions = arrayOf(
+        Pair(-1, 0),  // up
+        Pair(1, 0),   // down
+        Pair(0, -1),  // left
+        Pair(0, 1),   // right
+        Pair(-1, -1), // top left
+        Pair(-1, 1),  // top right
+        Pair(1, -1),  // bottom left
+        Pair(1, 1)    // bottom right
+    )
+
+    fun isValid(x: Int, y: Int, rows: Int, cols: Int): Boolean {
+        return x in 0 until rows && y in 0 until cols
+    }
+
+    fun findMatches(grid: List<CharArray>, word: String): Int {
+        var result = 0
+        val rows = grid.size
+        val cols = grid[0].size
+
+        for (x in 0 until rows) {
+            for (y in 0 until cols) {
+                if (grid[x][y] == word[0]) {
+                    for (direction in directions) {
+                        if (searchWord(grid, word, x, y, direction, rows, cols)) {
+                            result++
+                        }
+                    }
+                }
+            }
+        }
+        return result
+    }
+
+    fun searchWord(
+        grid: List<CharArray>,
+        word: String,
+        x: Int,
+        y: Int,
+        direction: Pair<Int, Int>,
+        rows: Int,
+        cols: Int
+    ): Boolean {
+        val length = word.length
+        for (i in 0 until length) {
+            val newX = x + direction.first * i
+            val newY = y + direction.second * i
+
+            if (!isValid(newX, newY, rows, cols) || grid[newX][newY] != word[i]) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun findWords() {
+        val word = "XMAS"
+        val input = this.javaClass.classLoader?.getResource("test4")?.readText()?:""
+        val test = "MMMSXXMASM\n" +
+                "MSAMXMSMSA\n" +
+                "AMXSXMAAMM\n" +
+                "MSAMASMSMX\n" +
+                "XMASAMXAMM\n" +
+                "XXAMMXXAMA\n" +
+                "SMSMSASXSS\n" +
+                "SAXAMASAAA\n" +
+                "MAMMMXMMMM\n" +
+                "MXMXAXMASX"
+
+        val inputArray = input.split("\n").map { it.toCharArray() }
+
+        var result = findMatches(inputArray, word)
+
+        println(result)
+    }
