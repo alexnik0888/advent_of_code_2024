@@ -1,0 +1,25 @@
+fun parse() {
+        val input = this.javaClass.classLoader?.getResource("test5")?.readText() ?: ""
+
+        val arrayString = input.split("\n")
+        val map: List<Pair<Int, Int>> = arrayString.filter { it.contains("|") }.map {
+                val (left, right) = it.split("|")
+                left.toInt() to right.toInt()
+            }
+
+        val arrays =
+            arrayString.filter { it.contains(",") }.map { it.split(",").map { it.toInt() } }
+        var result = 0
+        arrays.forEach { array ->
+            array.forEachIndexed { index, value ->
+                if (index == array.lastIndex) {
+                    result += array[array.lastIndex / 2]
+                    return@forEach
+                }
+                if (!(map.filter { origin -> origin.first == value }.map { it.second }.contains(array[index + 1])))
+                    return@forEach
+            }
+        }
+
+        println(result)
+    }
